@@ -14,7 +14,7 @@ $ npm install bigcluster
 ## Usage
 
 ``` javascript
-var bigcluster = require('bigcluster);
+var bigcluster = require('bigcluster');
 
 bigcluster(0, function(workid) {
     console.log("work id: ", workid);
@@ -26,14 +26,15 @@ bigcluster(0, function(workid) {
 ### parameters
 
 |*Name*|*Type*|*Description*|*Requirement*|
+|---|---|---|---|
 |count|int|required work count|Y|
 |onWorker|function|the worker processor|Y|
 |onMaster|function|the master processor|Y|
 
 > count
 >> -1 or &lt;0 - workcount = 1, disable cluster mode.  
->> 0 - workcount = cpu count, auto restart exited worker.  
->> &gt;0 - workcount = count, auto restart exited worker.
+>>           0 - workcount = cpu count, auto restart exited worker.  
+>>       &gt;0 - workcount = count, auto restart exited worker.
 
 ## License
 

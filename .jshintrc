@@ -1,0 +1,14 @@
+{
+    "maxerr": 50,
+    "predef": [
+        "brcx",
+        "brmx",
+        "brcommons",
+        "brmethods"
+    ],
+    "node": true,
+    "mocha": true,
+    "strict": true,
+    "eqnull": true,
+    "laxbreak": true
+}

@@ -4,18 +4,18 @@ var cluster = require('cluster');
 
 var envKey = "BIGCLUSTER_WORKER_ID";
 
-function BigCluster(cpu, onWorker, onMaster) {
+function BigCluster(count, onWorker, onMaster) {
     if (cluster.isMaster) {
-        var count = 1;
-        if (cpu < 0) {
+        var workcount = 1;
+        if (count < 0) {
             process.env[envKey] = '0';
         } else {
-            if (cpu > 0)
-                count = cpu;
+            if (count > 0)
+                workcount = count;
             else
-                count = require('os').cpus().length;
+                workcount = require('os').cpus().length;
 
-            for (var i = 0; i < count; i++) {
+            for (var i = 0; i < workcount; i++) {
                 var env = {};
                 env[envKey] = '' + (i + 1);
                 cluster.fork(env).env = env;
@@ -28,12 +28,12 @@ function BigCluster(cpu, onWorker, onMaster) {
             process.env[envKey] = '-1';
         }
         if (onMaster)
-            onMaster(count);
+            onMaster(workcount);
     }
 
-    var workerId = parseInt(process.env[envKey]);
-    if (workerId >= 0)
-        onWorker(workerId);
+    var workid = parseInt(process.env[envKey]);
+    if (workid >= 0)
+        onWorker(workid);
 }
 
 module.exports = BigCluster;
