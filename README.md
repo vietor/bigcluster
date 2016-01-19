@@ -29,12 +29,12 @@ bigcluster(0, function(workid) {
 |---|---|---|---|
 |count|int|required work count|Y|
 |onWorker|function|the worker processor|Y|
-|onMaster|function|the master processor|Y|
+|onMaster|function|the master processor|N|
 
 > count
->> -1 or &lt;0 - workcount = 1, disable cluster mode.  
->>           0 - workcount = cpu count, auto restart exited worker.  
->>       &gt;0 - workcount = count, auto restart exited worker.
+>> *-1 or &lt;0*: workcount = 1, disable cluster mode.  
+>> *0* workcount = cpu count, auto restart exited worker.  
+>> *&gt;0* workcount = count, auto restart exited worker.
 
 ## License
 
