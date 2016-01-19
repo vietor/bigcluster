@@ -23,7 +23,7 @@ bigcluster(0, function(workid) {
 });
 ```
 
-### parameters
+### Parameters
 
 |*Name*|*Type*|*Description*|*Requirement*|
 |---|---|---|---|
@@ -31,10 +31,12 @@ bigcluster(0, function(workid) {
 |onWorker|function|the worker processor|Y|
 |onMaster|function|the master processor|N|
 
-> count
->> *-1 or &lt;0*: workcount = 1, disable cluster mode.  
->> *0* workcount = cpu count, auto restart exited worker.  
->> *&gt;0* workcount = count, auto restart exited worker.
+> About **count**:
+>> |*Value*|*Description*|
+>> |---|---|  
+>> |-1 or &lt;0|workcount = 1, disable cluster mode.|  
+>> |0|workcount = cpu count, auto restart exited worker.|  
+>> |&gt;0|workcount = count, auto restart exited worker.|
 
 ## License
 
