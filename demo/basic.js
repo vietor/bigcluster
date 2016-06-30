@@ -2,16 +2,12 @@
 
 var bigcluster = require('../index');
 
-function demoMaster() {
-    console.log("startup master...");
-    process.on('message', function(data) {
-        console.log(data);
-    });
+function demoMaster(count) {
+    console.log("startup master...: " + count + ', ' + process.pid);
 }
 
 function demoWorker(workId) {
-    console.log("startup work: ", workId);
-    process.send("i am working");
+    console.log("startup work: " + workId + ', ' + process.pid);
     setTimeout(function() {
         process.exit(0);
     }, 3000);
