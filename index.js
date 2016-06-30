@@ -1,39 +1,73 @@
 "use strict";
 
-var cluster = require('cluster');
+var envKey = "BIGCLUSTER_WORKER";
 
-var envKey = "BIGCLUSTER_WORKER_ID";
+function setWorkEnv(env, data) {
+    env[envKey] = JSON.stringify(data);
+    return env;
+}
+
+function getWorkEnv(env) {
+    try {
+        return JSON.parse(env[envKey]);
+    } catch (e) {
+        return null;
+    }
+}
+
+function setWorkId(env, workId) {
+    env[envKey] = '' + workId;
+    return env;
+}
+
+function getWorkId(env) {
+    return parseInt(env[envKey]);
+}
 
 function BigCluster(count, onWorker, onMaster) {
-    if (cluster.isMaster) {
-        var workcount = 1;
-        if (count < 0) {
-            process.env[envKey] = '0';
-        } else {
-            if (count > 0)
-                workcount = count;
-            else
-                workcount = require('os').cpus().length;
+    if (count < 0) {
+        if (onMaster)
+            onMaster(1);
+        onWorker(1);
+    } else {
+        var cluster = require('cluster');
 
-            for (var i = 0; i < workcount; i++) {
-                var env = {};
-                env[envKey] = '' + (i + 1);
-                cluster.fork(env).env = env;
+        if (cluster.isMaster) {
+            var workCount = 1;
+            var workObjects = {};
+
+            if (count > 0)
+                workCount = count;
+            else
+                workCount = require('os').cpus().length;
+
+            for (var i = 0; i < workCount; i++) {
+                var id = i + 1;
+                var env = setWorkId({}, id);
+                var worker = cluster.fork(env);
+                worker.___ = {
+                    id: id,
+                    env: env
+                };
+                workObjects[id] = worker;
             }
 
             cluster.on('exit', function(worker, code, signal) {
-                cluster.fork(worker.env).env = worker.env;
+                var newest = cluster.fork(worker.___.env);
+                newest.___ = worker.___;
+                workObjects[newest.___.id] = newest;
             });
 
-            process.env[envKey] = '-1';
-        }
-        if (onMaster)
-            onMaster(workcount);
-    }
+            setWorkId(process.env, -1);
 
-    var workid = parseInt(process.env[envKey]);
-    if (workid >= 0)
-        onWorker(workid);
+            if (onMaster)
+                onMaster(workCount);
+        }
+
+        var workId = getWorkId(process.env);
+        if (workId >= 0)
+            onWorker(workId);
+    }
 }
 
 module.exports = BigCluster;
