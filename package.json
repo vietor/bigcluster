@@ -1,7 +1,7 @@
 {
     "name": "bigcluster",
     "description": "Smart cluster framwork NodeJS",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "keywords": [
         "cluster"
     ],
