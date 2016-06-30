@@ -2,19 +2,6 @@
 
 var envKey = "BIGCLUSTER_WORKER";
 
-function setWorkEnv(env, data) {
-    env[envKey] = JSON.stringify(data);
-    return env;
-}
-
-function getWorkEnv(env) {
-    try {
-        return JSON.parse(env[envKey]);
-    } catch (e) {
-        return null;
-    }
-}
-
 function setWorkId(env, workId) {
     env[envKey] = '' + workId;
     return env;
